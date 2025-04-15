@@ -78,4 +78,7 @@ if __name__ == '__main__':
 def home():
     return 'Server is running!'
 
+# 在 api.py 的最下方
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
 
