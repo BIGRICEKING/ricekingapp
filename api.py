@@ -61,9 +61,13 @@ def home():
 def predict():
     try:
         if 'image' not in request.files:
+            print("❌ 沒有收到 'image' 欄位")
             return jsonify({'error': 'No image uploaded'}), 400
 
         file = request.files['image']
+        print(f"✅ 收到圖片：{file.filename}")
+
+        # 圖片處理
         img = Image.open(file).convert('RGB')
         img_np = np.array(img)
 
@@ -88,8 +92,13 @@ def predict():
         predicted_class = int(np.argmax(prediction))
 
         return jsonify({'result': predicted_class})
+
     except Exception as e:
+        import traceback
+        print("🔥 /predict 發生錯誤：", str(e))
+        traceback.print_exc()  # 印出詳細錯誤
         return jsonify({'error': str(e)}), 500
+
 
 # ==== 啟動伺服器 ==== 
 if __name__ == "__main__":
