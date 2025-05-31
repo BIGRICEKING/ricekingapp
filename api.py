@@ -49,6 +49,13 @@ print("📂 目前 BASE_DIR：", BASE_DIR)
 model_seg = tf.keras.models.load_model(seg_path, custom_objects=custom_objects)
 model_cls = tf.keras.models.load_model(cls_path, custom_objects=custom_objects)
 
+# ✅ 模型 warm-up（初始化做一次假推論）
+dummy_input = np.zeros((1, 300, 400, 3), dtype=np.float32)  # 模擬一張圖片的大小
+print("🚀 模型 warm-up 開始")
+_ = model_seg.predict(dummy_input)
+_ = model_cls.predict(dummy_input)
+print("✅ 模型 warm-up 完成")
+
 # ==== 建立 Flask 應用 ==== 
 app = Flask(__name__)
 CORS(app)
